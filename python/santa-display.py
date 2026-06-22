@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import os, sys
+os.environ['QT_API'] = 'pyqt'
+#import sip
+#sip.setapi("QString", 2)
+#sip.setapi("QVariant", 2)
+
+from PyQt5 import QtCore, QtGui, QtWidgets,sip
+sip.setapi("QString", 2)
+sip.setapi("QVariant", 2)
+
+from modules.mpl_config import configureMatplotlib
+from modules.display_main import SantaDisplay
+
+def main():
+    """ SANTA display main function """
+    configureMatplotlib()
+    app = QtWidgets.QApplication(sys.argv)
+    display = SantaDisplay()
+    display.show()
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
