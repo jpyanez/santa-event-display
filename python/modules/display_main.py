@@ -76,6 +76,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
             from modules.ipython_console import IpythonConsole
             self.console = IpythonConsole()
             self.console.show()
+            self.console.ipyConsole.pushVariables({"viewer":self})
         except:
             self.console = None
             print('SANTA-display: interactive console could not be loaded. The viewer will still work, but you will not be able to access the frame objects from a terminal')

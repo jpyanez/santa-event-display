@@ -48,12 +48,13 @@ class IpythonConsole(QtWidgets.QWidget):
         #self.app = QtGui.QApplication(sys.argv)
         self.setWindowIcon(QtGui.QIcon('../resources/display-icon.png'))
         self.setWindowTitle('SANTA interactive console')
-        print('Reached here')
+        
         layout = QtWidgets.QVBoxLayout(self)
         self.ipyConsole = QIPythonWidget(customBanner="Ipython console for the SANTA viewer\n")
 
         layout.addWidget(self.ipyConsole)        
-        self.ipyConsole.pushVariables({"dataclasses":dataclasses, "simclasses":simclasses,
+        self.ipyConsole.pushVariables({
+                                       "dataclasses":dataclasses, "simclasses":simclasses,
                                        "icetray":icetray, "dataio":dataio,
                                        "frame":None})
         self.ipyConsole.printText("Use the 'whos' command for information.")              
