@@ -34,7 +34,7 @@ selectedParticles = ['MCMostEcascade',
                      'SPE']
 
 ## Layout selector items
-figureLayouts = OrderedDict([ ('Upgrade IL', 
+figureLayouts = OrderedDict([ ('DC+Upgrade Layout', 
                                array([[86,0,81,0,82],[0,0,36,92,0],[0,87,88,91,83],
                                       [85,89,79,90,80],[0,0,84,0,0]])),
                               ('DeepCore IL', 

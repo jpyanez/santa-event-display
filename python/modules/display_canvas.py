@@ -170,7 +170,8 @@ class SantaCanvas(MplCanvas):
         if plot_map.shape[0] == 1 and plot_map.shape[1] == 1:
             markOMlevel = True
 
-        # Calculate the "zero" time of the event
+        # Calculate the "zero" time of the 
+        time_zero = 10000 # Trigger time
         if main_hit_series:
             all_hit_times = [x.t for x in pulses]
             time_zero     = median(all_hit_times)

@@ -2,13 +2,9 @@
 
 import os, sys
 os.environ['QT_API'] = 'pyqt5'
-#import sip
-#sip.setapi("QString", 2)
-#sip.setapi("QVariant", 2)
 
-from PyQt5 import QtCore, QtGui, QtWidgets,sip
-sip.setapi("QString", 2)
-sip.setapi("QVariant", 2)
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 from modules.mpl_config import configureMatplotlib
 from modules.display_main import SantaDisplay
