@@ -10,13 +10,13 @@ from IPython.lib import guisupport
 class QIPythonWidget(RichJupyterWidget):
     """ Convenience class for a live IPython console widget. We can replace the standard banner using the customBanner argument"""
     def __init__(self,customBanner=None,*args,**kwargs):
-        if customBanner!=None: self.banner=customBanner
+        if customBanner is not None: self.banner=customBanner
         super(QIPythonWidget, self).__init__(*args,**kwargs)
 
         self.kernel_manager = kernel_manager = QtInProcessKernelManager()
         kernel_manager.start_kernel()
-        kernel_manager.kernel.gui = 'qt5'
-        self.kernel_client = kernel_client = self._kernel_manager.client()
+        kernel_manager.kernel.gui = 'qt'
+        self.kernel_client = kernel_client = self.kernel_manager.client()
         kernel_client.start_channels()
 
         def stop():
@@ -41,15 +41,15 @@ class QIPythonWidget(RichJupyterWidget):
         self._execute(command,False)
 
 
-class IpythonConsole(QMainWindow):
+class IpythonConsole(QtWidgets.QWidget):
     """ Main GUI Widget including a button and IPython Console widget inside vertical layout """
     def __init__(self, parent=None):
         super(IpythonConsole, self).__init__(parent)
-        self.app = QtWidgets.QApplication(sys.argv)
+        #self.app = QtGui.QApplication(sys.argv)
         self.setWindowIcon(QtGui.QIcon('../resources/display-icon.png'))
         self.setWindowTitle('SANTA interactive console')
         print('Reached here')
-        layout = QtGui.QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
         self.ipyConsole = QIPythonWidget(customBanner="Ipython console for the SANTA viewer\n")
 
         layout.addWidget(self.ipyConsole)        

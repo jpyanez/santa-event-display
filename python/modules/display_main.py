@@ -6,6 +6,7 @@ from . import icetray, dataio, dataclasses, simclasses, santa
 from . import expanduser, geometry_filename, km3net_seatray, icecube_icetray, nan
 from . import pulseType, particleType, selectedPulses, selectedParticles
 
+
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from .display_classes import ComboTextBox, CheckboxScroll
 from .display_canvas import SantaCanvas

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys
-os.environ['QT_API'] = 'pyqt'
+os.environ['QT_API'] = 'pyqt5'
 #import sip
 #sip.setapi("QString", 2)
 #sip.setapi("QVariant", 2)
