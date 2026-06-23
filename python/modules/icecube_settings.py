@@ -1,4 +1,4 @@
-from . import dataclasses, santa, simclasses
+from . import dataclasses, simclasses
 from . import array, OrderedDict
 
 ## Pulses
@@ -8,15 +8,23 @@ pulseType = [dataclasses.I3RecoPulseSeriesMap,
              dataclasses.I3MCHitSeriesMap]
 
 selectedPulses = ['OfflinePulses',
+                  'InIce',
+                  'Upgrade',
                   'SANTA',
                   'TWSRT', 
                   'SRTTW', 
                   'MCHit']
 
 ## Particles
-particleType = [dataclasses.I3Particle,
-                santa.I3SantaFitParams]#, # Expand it before?
-                #dataclasses.I3MMCTrackList] # Expand it before
+try:
+    from icecube import santa
+    particleType = [dataclasses.I3Particle,
+                        santa.I3SantaFitParams]#, # Expand it before?
+                        #dataclasses.I3MMCTrackList] # Expand it before
+except:
+        particleType = [dataclasses.I3Particle]
+        print('SANTA-display: No SANTA libraries')
+
 
 selectedParticles = ['MCMostEcascade',
                      'MCMostEtrack',

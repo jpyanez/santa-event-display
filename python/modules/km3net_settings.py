@@ -1,4 +1,4 @@
-from . import dataclasses, santa, simclasses, antares_common
+from . import dataclasses, simclasses, antares_common
 from . import array, OrderedDict
 
 ## Pulses

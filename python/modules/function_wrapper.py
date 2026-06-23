@@ -1,17 +1,21 @@
 from . import icecube_icetray, km3net_seatray
-from . import dataclasses, simclasses, icetray, santa
+from . import dataclasses, simclasses, icetray
 
-if km3net_seatray:
+if icecube_icetray:
+    try:
+        from icecube import santa
+        santa_type = santa.I3SantaFitParams
+        print('SANTA-display: No SANTA libraries')
+    except:
+        santa_type = None
+elif km3net_seatray:
     from . import antares_common
+    santa_type = santa.I3BBFitRecoParams
 
 #####
 ## Defining the single string fit type
 #####
 
-if icecube_icetray:
-    santa_type = santa.I3SantaFitParams
-if km3net_seatray:
-    santa_type = santa.I3BBFitRecoParams
 
 def santa_uz(fit):
     if icecube_icetray:    return fit.uz
@@ -58,8 +62,8 @@ def particle_azimuth(particle):
 ## Geometry
 #####
 def dom_x(geometry, omkey):
-    print(geometry, omkey)
-    print(geometry.omgeo[icetray.OMKey(1,1,0)].position.x)
+    #print(geometry, omkey)
+    #print(geometry.omgeo[icetray.OMKey(1,1,0)].position.x)
     if icecube_icetray: return geometry.omgeo[omkey].position.x
     if km3net_seatray:  return geometry.omgeo[omkey].position.X
 

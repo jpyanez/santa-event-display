@@ -24,9 +24,17 @@ try:
     from icecube import santa
     icecube_icetray = True
 except:
+    # Need to come up with a better way to decide on the experiment.
+    # Quick and dirty for now
+    icecube_icetray = True
+    print('SANTA-display: No SANTA libraries loaded. The SANTA recos will not be available')
+try:
     from icecube import antares_common
     from icecube import antares_bbfit_reco as santa
     km3net_seatray = True
+    icecube_icetray = False
+except:
+    print('SANTA-display: No ANTARES libraries loaded.')
 
 if icecube_icetray:
     #try:

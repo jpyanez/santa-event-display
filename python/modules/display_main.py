@@ -2,7 +2,11 @@ import json
 import os
 
 from . import QtCore, QtGui, QtWidgets
-from . import icetray, dataio, dataclasses, simclasses, santa
+from . import icetray, dataio, dataclasses, simclasses
+try:
+    from icecube import santa
+except:
+    print('SANTA-display: No SANTA libraries')
 from . import expanduser, geometry_filename, km3net_seatray, icecube_icetray, nan
 from . import pulseType, particleType, selectedPulses, selectedParticles
 
@@ -203,7 +207,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         self.canvas.detectorGeometry, self.canvas.detectorDepth = GeometrySearch(self.infile)
 
         if self.canvas.detectorGeometry is None:
-            self.statusbar.showMessage('No geometry in input file, loading default geometry...')
+            print('SANTA-display: No geometry in input file, loading default geometry...')
             try:
                 ginfile = dataio.I3File(geometry_filename)
                 self.canvas.detectorGeometry, self.canvas.detectorDepth = GeometrySearch(ginfile)
@@ -213,7 +217,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
                     'Could not load default geometry from usr_cfg. Check the configuration file.')
                 return
         else:
-            self.statusbar.showMessage('Geometry definition found in input file')
+            print('SANTA-display: Geometry definition found in input file')
 
         self.apply_profile_detector_depth()
 
@@ -340,7 +344,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         series_name_list = self.seriesScroll.checkAllItems(self.pulseSeriesList)
         recos_name_list = self.recoScroll.checkAllItems(self.recoList)
         main_series = self.seriesScroll.getMainSeries(self.pulseSeriesList)
-        print(main_series)
+        #print(main_series)
         self.canvas.update_figure(self.frame, series_name_list, recos_name_list, 
                                   main_series, self.strSelectorBox.selectedItem(), 
                                   self.logQ.isChecked(), self.integrate.isChecked())
@@ -488,7 +492,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         cascadeE = 0.
         for one_key in self.frame.keys():
             if 'MCTree' in one_key and type(self.frame[one_key]) == dataclasses.I3MCTree:
-                print(self.frame[one_key])
+                #print(self.frame[one_key])
 
                 # Loop over all particles
                 for p in self.frame[one_key]:

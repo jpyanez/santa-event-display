@@ -155,7 +155,7 @@ def textToArray(ftext):
 
     new_array = unique(new_array)
     new_array.sort()
-    if new_array.max() > 86 or new_array.min() < 1:
+    if new_array.max() > 93 or new_array.min() < 1:
         failed = True
     if failed:
         return [-1]

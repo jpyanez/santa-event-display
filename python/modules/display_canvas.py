@@ -215,8 +215,8 @@ class SantaCanvas(MplCanvas):
                         real_charge = total_dom_charge
                         doms_with_hits = unique_dom_list
 
-                        print(hit_times)
-                        print(hit_depth)
+                        #print(hit_times)
+                        #print(hit_depth)
 
                     if logQ:
                         hit_charge = [(log10(x.q)+2.)**2 for x in string_hits]
