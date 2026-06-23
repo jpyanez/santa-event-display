@@ -38,7 +38,7 @@ def GeometrySearch(infile):
 
 
 class SantaDisplay(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, args):
         self.infile = None
         self.frame  = None
         self.pulseSeriesList  = None
@@ -85,6 +85,15 @@ class SantaDisplay(QtWidgets.QMainWindow):
             self.console = None
             print('SANTA-display: interactive console could not be loaded. The viewer will still work, but you will not be able to access the frame objects from a terminal')
 
+        # Check if the argument passed is a valid file
+        if len(args)>1:
+            print('Args: ', args)
+            if os.path.isfile(args[1]):
+                self.infile_name = args[1]
+                self.openI3File()
+            else:
+                print('SANTA-display: File %s does not exist' % args[0])
+
     # Control bar to the right side
     def setControlCenter(self):
         self.controlCenter = QtWidgets.QWidget()
@@ -94,7 +103,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         self.controlLayout.setContentsMargins(6, 6, 6, 6)
 
         self.openFileButton = QtWidgets.QPushButton('Open file')
-        self.openFileButton.clicked.connect(self.openI3File)
+        self.openFileButton.clicked.connect(self.openI3FileButton)
         self.firstFrameButton = QtWidgets.QPushButton('<<')
         self.firstFrameButton.clicked.connect(self.firstFrame)
         self.previousFrameButton = QtWidgets.QPushButton('<')
@@ -181,7 +190,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         openFile = QtWidgets.QAction(QtGui.QIcon('open.png'), 'Open', self)
         openFile.setShortcut('Ctrl+O')
         openFile.setStatusTip('Open new File')
-        openFile.triggered.connect(self.openI3File)
+        openFile.triggered.connect(self.openI3FileButton)
 
         # Menu buttons
         menubar = self.menuBar()
@@ -191,7 +200,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
 
         return menubar
 
-    def openI3File(self):
+    def openI3FileButton(self):
         self.canvas.detectorGeometry = None
         if self.infile is not None:
             self.infile.close()
@@ -199,9 +208,13 @@ class SantaDisplay(QtWidgets.QMainWindow):
         self.infile_name, _filter = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', expanduser('~'))
         if not self.infile_name:
             return
-
+        
+        self.openI3File()
+    
+    def openI3File(self):
         self.infile = dataio.I3File(self.infile_name, 'r')
         self.fileLabel.setText('File: %s' % self.infile_name)
+        print('SANTA-display: Opening file %s' % self.infile_name)
         self.statusbar.showMessage('Opening file and searching for geometry...')
 
         self.canvas.detectorGeometry, self.canvas.detectorDepth = GeometrySearch(self.infile)
@@ -340,7 +353,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
 
     def refreshPlots(self):
         if self.infile == None:
-            self.openI3File()
+            self.openI3FileButton()
         series_name_list = self.seriesScroll.checkAllItems(self.pulseSeriesList)
         recos_name_list = self.recoScroll.checkAllItems(self.recoList)
         main_series = self.seriesScroll.getMainSeries(self.pulseSeriesList)

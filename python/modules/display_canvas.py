@@ -116,7 +116,7 @@ class SantaCanvas(MplCanvas):
         plot_map_xy = [[(nan, nan) for x in range(plot_map.shape[1])] for y in range(plot_map.shape[0])]
         figure_ylimit = zeros(2)
         stringKey = icetray.OMKey()
-        stringKey.om = 1
+        stringKey.om = 10
         for i in range(0, plot_map.shape[0]):
             for j in range(0, plot_map.shape[1]):
                 if plot_map[i][j] == 0:
@@ -181,6 +181,7 @@ class SantaCanvas(MplCanvas):
         for i in range(0, plot_map.shape[0]):
             for j in range(0, plot_map.shape[1]):
                 emptyString = True
+                doms_with_hits = []
                 if plot_map[i][j] == 0:
                     continue
 
@@ -235,14 +236,14 @@ class SantaCanvas(MplCanvas):
                 #     for hcounter in range(0, len(hit_times)):
                 #         print "%i" % hit_times[hcounter] +  '\t'+"%i" %  hit_depth[hcounter]+ '\t' +"%.2f" % real_charge[hcounter]
                                    
-                if markOMlevel and main_hit_series:
+                if markOMlevel and main_hit_series and not emptyString:
                     for k in range(len(hit_times)):
                         self.plot_axes[counter].text(hit_times[k]+10, hit_depth[k]-7, 
                                                      "%i" % doms_with_hits[k], fontsize=7)
                 xsize = self.xsize
                 if emptyString:
-                    # 10000 ns is the trigger time
-                    self.plot_axes[counter].set_xlim([10000-xsize/4,  10000+3.*xsize/4])
+                    self.plot_axes[counter].set_xlim([time_zero-xsize/4,  
+                                                      time_zero+3.*xsize/4])
                 else:
                     self.plot_axes[counter].set_xlim([median(hit_times)-xsize/2, median(hit_times) + xsize/2])
 

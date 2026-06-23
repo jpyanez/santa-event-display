@@ -17,7 +17,7 @@ def main():
     """ SANTA display main function """
     configureMatplotlib()
     app = QtWidgets.QApplication(sys.argv)
-    display = SantaDisplay()
+    display = SantaDisplay(sys.argv)
     display.show()
     sys.exit(app.exec_())
 
