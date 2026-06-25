@@ -116,7 +116,7 @@ class SantaCanvas(MplCanvas):
         plot_map_xy = [[(nan, nan) for x in range(plot_map.shape[1])] for y in range(plot_map.shape[0])]
         figure_ylimit = zeros(2)
         stringKey = icetray.OMKey()
-        stringKey.om = 10
+        stringKey.om = 40
         for i in range(0, plot_map.shape[0]):
             for j in range(0, plot_map.shape[1]):
                 if plot_map[i][j] == 0:

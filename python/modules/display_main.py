@@ -500,23 +500,23 @@ class SantaDisplay(QtWidgets.QMainWindow):
         # Find the MC information, put it as separate particles
         # This function had to change because of deprecation of mctree methods
         # Selecting the most energetic track and cascade
-        #if (not self.frame.Has('MCMostEtrack')) and (not self.frame.Has('MCMostEcascade')):
-        trackE = 0.
-        cascadeE = 0.
-        for one_key in self.frame.keys():
-            if 'MCTree' in one_key and type(self.frame[one_key]) == dataclasses.I3MCTree:
-                #print(self.frame[one_key])
-
-                # Loop over all particles
-                for p in self.frame[one_key]:
-                    if p.type == p.ParticleType.Hadrons:
-                        if p.energy > cascadeE:
-                            cascadeE = p.energy
-                            self.frame['MCMostEcascade'] = p
-                    elif abs(p.pdg_encoding) == 13:
-                        if p.energy > trackE:
-                            trackE = p.energy
-                            self.frame['MCMostEtrack'] = p
+        if (not self.frame.Has('MCMostEtrackViewer')) and (not self.frame.Has('MCMostEcascadeViewer')):
+            trackE = 0.
+            cascadeE = 0.
+            for one_key in self.frame.keys():
+                if 'MCTree' in one_key and type(self.frame[one_key]) == dataclasses.I3MCTree:
+                    #print(self.frame[one_key])
+                    
+                    # Loop over all particles
+                    for p in self.frame[one_key]:
+                        if p.type == p.ParticleType.Hadrons:
+                            if p.energy > cascadeE:
+                                cascadeE = p.energy
+                                self.frame['MCMostEcascadeViewer'] = p
+                        elif abs(p.pdg_encoding) == 13:
+                            if p.energy > trackE:
+                                trackE = p.energy
+                                self.frame['MCMostEtrackViewer'] = p
                     
         for one_key in self.frame.keys():
             try:
