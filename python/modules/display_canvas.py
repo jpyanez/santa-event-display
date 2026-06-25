@@ -116,13 +116,20 @@ class SantaCanvas(MplCanvas):
         plot_map_xy = [[(nan, nan) for x in range(plot_map.shape[1])] for y in range(plot_map.shape[0])]
         figure_ylimit = zeros(2)
         stringKey = icetray.OMKey()
-        stringKey.om = 40
         for i in range(0, plot_map.shape[0]):
             for j in range(0, plot_map.shape[1]):
                 if plot_map[i][j] == 0:
                     continue
                 stringKey.string = int(plot_map[i][j])
-                plot_map_xy[i][j] = (dom_x(self.detectorGeometry, stringKey), dom_y(self.detectorGeometry, stringKey))
+                coords_retrieved = False
+                # This is silly, but had to do it because GCD files for Upgrade skip modules
+                for iom in range(1, 116):
+                    if coords_retrieved:
+                        break
+                    stringKey.om = iom
+                    if stringKey in self.detectorGeometry.omgeo:
+                        plot_map_xy[i][j] = (dom_x(self.detectorGeometry, stringKey), dom_y(self.detectorGeometry, stringKey))
+                        coords_retrieved = True
 
         return plot_map_xy
 

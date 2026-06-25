@@ -62,6 +62,7 @@ def particle_azimuth(particle):
 ## Geometry
 #####
 def dom_x(geometry, omkey):
+    #print(omkey)
     if icecube_icetray: return geometry.omgeo[omkey].position.x
     if km3net_seatray:  return geometry.omgeo[omkey].position.X
 
