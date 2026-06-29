@@ -5,9 +5,9 @@ if icecube_icetray:
     try:
         from icecube import santa
         santa_type = santa.I3SantaFitParams
-        print('SANTA-display: No SANTA libraries')
     except:
         santa_type = None
+        print('SANTA-display: No SANTA libraries')
 elif km3net_seatray:
     from . import antares_common
     santa_type = santa.I3BBFitRecoParams
