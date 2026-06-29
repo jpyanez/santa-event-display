@@ -150,6 +150,12 @@ class SantaDisplay(QtWidgets.QMainWindow):
 
         self.logQ     = QtWidgets.QCheckBox('Plot log(Q)', self.controlCenter)
         self.integrate= QtWidgets.QCheckBox('Integrate Q / show first only', self.controlCenter)
+        self.qscale   = QtWidgets.QDoubleSpinBox(self.controlCenter)
+        self.qscale.setPrefix('Q scale: ')
+        self.qscale.setValue(10.)
+        self.qscale.setMinimum(0.1)
+        self.qscale.setMaximum(100)
+        self.qscale.setKeyboardTracking(False)
 
         self.seriesScroll = CheckboxScroll(self.controlCenter)
         self.recoScroll   = CheckboxScroll(self.controlCenter)
@@ -174,6 +180,7 @@ class SantaDisplay(QtWidgets.QMainWindow):
         self.controlLayout.addWidget(self.simplify)
         self.controlLayout.addWidget(self.logQ)
         self.controlLayout.addWidget(self.integrate)
+        self.controlLayout.addWidget(self.qscale)
         self.controlLayout.addWidget(self.seriesGroup)
         self.controlLayout.addWidget(self.recoGroup)
         self.controlLayout.addStretch(1)
@@ -360,7 +367,8 @@ class SantaDisplay(QtWidgets.QMainWindow):
         #print(main_series)
         self.canvas.update_figure(self.frame, series_name_list, recos_name_list, 
                                   main_series, self.strSelectorBox.selectedItem(), 
-                                  self.logQ.isChecked(), self.integrate.isChecked())
+                                  self.logQ.isChecked(), self.integrate.isChecked(),
+                                  self.qscale.value())
         
     def openImageParameters(self):
         dialog = QtWidgets.QDialog(self)

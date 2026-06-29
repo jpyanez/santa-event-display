@@ -30,7 +30,7 @@ class MplCanvas(FigureCanvas):
 class SantaCanvas(MplCanvas):
     def __init__(self, geometry, *args, **kwargs):
         MplCanvas.__init__(self, *args, **kwargs)
-        self.markers   = ('o','x','+','^','s','D')
+        self.markers   = ('o','x','v','^','s','D')
         self.colors    = ('C0','C1','C2','C3','C4','C5')
         self.base_font_size = QtWidgets.QApplication.font().pointSize()
         if self.base_font_size <= 0:
@@ -50,7 +50,7 @@ class SantaCanvas(MplCanvas):
         self.fontP.set_size(self.get_font_size())
 
     def update_figure(self, frame, series_name_list, series_reco_list, 
-                      main_series, stringLayout, logQ, integrateQ):
+                      main_series, stringLayout, logQ, integrateQ, scaleQ):
 
         # XX How much of this is really necessary to clean up? XX
         if len(self.fig.get_axes()) > 0:
@@ -72,7 +72,7 @@ class SantaCanvas(MplCanvas):
             if main_hs and plot_map.shape[1] == 1:
                 main_pulse_series = pulses
             self.plotPulses(one_series, pulses, plot_map, self.markers[i % len(self.markers)], 
-                            self.colors[i % len(self.colors)] , main_hs, logQ, integrateQ)
+                            self.colors[i % len(self.colors)] , main_hs, logQ, integrateQ, scaleQ)
 
 
         for i in range(0, len(series_reco_list)):
@@ -171,7 +171,7 @@ class SantaCanvas(MplCanvas):
                     self.plot_axes[counter].plot(time, z, '-'+line_color, lw = 1.5, label = one_reco+chi2_text)
                     
 
-    def plotPulses(self, one_series, pulses, plot_map, marker_symbol, marker_color,  main_hit_series, logQ, integrateQ):
+    def plotPulses(self, one_series, pulses, plot_map, marker_symbol, marker_color,  main_hit_series, logQ, integrateQ, scaleQ):
         counter = -1
         markOMlevel = False
         if plot_map.shape[0] == 1 and plot_map.shape[1] == 1:
@@ -179,13 +179,15 @@ class SantaCanvas(MplCanvas):
 
         # Calculate the "zero" time of the 
         time_zero = 10000 # Trigger time
-        if main_hit_series:
+        if main_hit_series and pulses:
             all_hit_times = [x.t for x in pulses]
             time_zero     = median(all_hit_times)
-            all_hit_z     = [x.z for x in pulses]
-            z_zero        = mean(all_hit_z)
-            
-        
+            #all_hit_z     = [x.z for x in pulses]
+            #z_zero        = mean(all_hit_z)
+
+        #if np.isnan(time_zero):
+        #    print(time_zero, pulses)
+
         for i in range(0, plot_map.shape[0]):
             for j in range(0, plot_map.shape[1]):
                 emptyString = True
@@ -227,16 +229,18 @@ class SantaCanvas(MplCanvas):
                         #print(hit_times)
                         #print(hit_depth)
 
-                    if logQ:
-                        hit_charge = [(log10(x.q)+2.)**2 for x in string_hits]
-                    else:
-                        hit_charge = [(x.q+5.)**2 for x in string_hits]
+                if logQ:
+                    real_charge = log10(real_charge) #[(log10()+2.)**2 for x in string_hits]
+                else:
+                    real_charge = real_charge*scaleQ
             
                 counter +=1
 
                 # Plotting the hits
-                self.plot_axes[counter].scatter(hit_times, hit_depth, hit_charge, marker = marker_symbol, 
-                                                edgecolors = marker_color, facecolors = marker_color, label = one_series)
+                # Why do I compute the real_charge above?
+                self.plot_axes[counter].scatter(hit_times, hit_depth, real_charge,
+                                                marker = marker_symbol, 
+                                                c = marker_color, label = one_series)
 
                 # if main_hit_series and plot_map.size <= 4 and len(string_hits) > 0:
                 #     print 'STRING ',  plot_map[i][j]
@@ -250,6 +254,7 @@ class SantaCanvas(MplCanvas):
                                                      "%i" % doms_with_hits[k], fontsize=7)
                 xsize = self.xsize
                 if emptyString:
+                    #print(time_zero, xsize)
                     self.plot_axes[counter].set_xlim([time_zero-xsize/4,  
                                                       time_zero+3.*xsize/4])
                 else:
